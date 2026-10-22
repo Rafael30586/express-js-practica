@@ -1,0 +1,1 @@
+require('./mind-grenade') // Se llama a adValues()
