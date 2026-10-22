@@ -1,20 +1,25 @@
 const express = require('express')
 const app = express()
+const logger = require('./logger')
+const authorize = require('./authorize')
 
-const logger = (req,res,next) =>{
-  const method = req.method
-  const url = req.url
-  const time = new Date().getFullYear()
-  console.log(method, url, time)
-  next()
-}
+app.use([authorize, logger]) // Esta es la manera de usar dos middleware
 
-app.get('/',logger, (req, res)=>{
+app.get('/', (req, res)=>{ // A este endpoint no le afecta el logger por estar antes
   res.send('Home')
+}) 
+
+app.get('/about',(req,res)=>{
+  res.send('About')
 })
 
-app.get('/about', logger,(req,res)=>{
-  res.send('About')
+app.get('/api/products', (req,res)=>{
+  res.send('products')
+})
+
+app.get('/api/items', (req,res)=>{
+  console.log(req.user) // Este usuario viene del middleware authorize
+  res.send('items')
 })
 
 app.listen(5000, ()=>{
