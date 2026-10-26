@@ -3,7 +3,7 @@ const router = express.Router()
 let { people } = require('../data')
 
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
   res.status(200).json({ success: true, data: people })
 })
 
@@ -57,6 +57,7 @@ router.delete('/:id', (req, res) => {
   const newPeople = people.filter(
     (person) => person.id !== Number(req.params.id)
   )
+  people = newPeople
   return res.status(200).json({ success: true, data: newPeople })
 })
 
